@@ -1,5 +1,7 @@
 package org.gerdl.openstrato.model.shipsystems;
 
-public class SmallSteeringJet {
+import org.gerdl.openstrato.model.Thruster;
+
+public class SmallSteeringJet extends Thruster {
 
 }
