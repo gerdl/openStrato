@@ -13,12 +13,21 @@ public abstract class Ship {
 	protected List<ShipSystem> systems = new Vector<ShipSystem>();
 	
 	// physics:
-	double x,y;    // position
-	double vx,vy;  // speed
+	double x,y;    // position in the world coord system
+	double cmx,cmy,totalmass;  // cm, center of mass in local coords
+	double vx,vy;  // speed of the cm
+	double dir;    // angle
+	double w;      // angular velocity
+	double Ia; 	   // Moment of inertia
 	
 	// economy:
 	Resource res;
 	
+	public Ship(Sim _mysim) {
+		mysim = _mysim;
+		
+		updateCenterOfMass();
+	}
 	
 	
 	/**
@@ -29,9 +38,38 @@ public abstract class Ship {
 	 */
 	public void update() {
 		
-		// center of mass, local coords
-		double cmx = 0.0, cmy = 0.0, totalmass = 0.0;
+		//updateEconomy();
 		
+		//updateControllers();
+		
+		//updateForces();
+		double fx=0, fy=0;
+		for (ShipSystem s: systems) {
+			
+			if (!(s instanceof IForceExcertingShipSystem))
+				continue;
+			IForceExcertingShipSystem fs = (IForceExcertingShipSystem) s;
+			
+			fx += fs.getForceVectX();
+			fy += fs.getForceVectY();
+			totalmass += s.mass;
+		}
+		
+		//updateMove();
+		
+		//updateGlobalCoords();
+
+	}
+	
+	
+
+	/**
+	 * when new systems are added or destroyed, we'll have to update the center of mass. 
+	 * @return 
+	 */
+	private void updateCenterOfMass() {
+
+		// center of mass, local coords:
 		for (ShipSystem s: systems) {
 			cmx += (double)s.dx * s.mass;
 			cmy += (double)s.dy * s.mass;
@@ -39,9 +77,9 @@ public abstract class Ship {
 		}
 		assert( totalmass > 0.0);
 		cmx /= totalmass;
-		cmy /= totalmass;
-		
-		
-		
+		cmy /= totalmass;		
 	}
+	
+	
+	
 }
