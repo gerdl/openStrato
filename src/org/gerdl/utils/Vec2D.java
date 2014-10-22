@@ -1,14 +1,22 @@
 package org.gerdl.utils;
 
-public class Vect2D {
+/**
+ *  Vector class:
+ * 
+ *  | x |
+ *  | y |
+ * 
+ * @author gerdl
+ */
+public class Vec2D {
 	
 	public double x, y;
 	
-	public Vect2D() {
+	public Vec2D() {
 		x = 0;
 		y = 0;
 	}
-	public Vect2D(double _x, double _y) {
+	public Vec2D(double _x, double _y) {
 		x = _x;
 		y = _y;
 	}
@@ -17,7 +25,7 @@ public class Vect2D {
 		x = _x;
 		y = _y;
 	}
-	public void set(Vect2D a) {
+	public void set(Vec2D a) {
 		x = a.x;
 		y = a.y;
 	}
@@ -31,7 +39,7 @@ public class Vect2D {
 		return (x*x + y*y);
 	}
 	
-	public void add(Vect2D other) {
+	public void add(final Vec2D other) {
 		x += other.x;
 		y += other.y;
 	}
@@ -39,7 +47,7 @@ public class Vect2D {
 		x += dx;
 		y += dy;
 	}
-	public void sub(Vect2D other) {   // for convenience reasons ;)   
+	public void sub(Vec2D other) {   // for convenience reasons ;)   
 		x -= other.x;
 		y -= other.y;
 	}
@@ -54,8 +62,21 @@ public class Vect2D {
 	 * @return a x b = det(a*b) = |a| * |b| * sin(angle(a,b))
 	 */
 	
-	public static double crossProd(Vect2D a, Vect2D b) {
+	public static double crossProd(Vec2D a, Vec2D b) {
 		return ( a.x * b.y + a.y * b.x );
 	}
+    
+    
+    /**
+     * Multiply Mat2D times Vec2D:
+     * 
+     * | x0 x1 |  *  | x |
+     * | x2 x3 |     | y |
+     * 
+     */
+    public void setToMatMult(Mat2D m, Vec2D v) {
+        x = m.x[0]*v.x + m.x[1]*v.y;
+        y = m.x[2]*v.x + m.x[3]*v.y;
+    }
 
 }

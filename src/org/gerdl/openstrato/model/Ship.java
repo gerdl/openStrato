@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.gerdl.utils.Vect2D;
+import org.gerdl.utils.Vec2D;
 
 public abstract class Ship {
 
@@ -17,13 +17,13 @@ public abstract class Ship {
 	Resource res;
 	
 	// static physics: const as long as the ship design is not changing: 
-	Vect2D cm  = new Vect2D();     // cm, center of mass in local coords
+	Vec2D  cm  = new Vec2D();     // cm, center of mass in local coords
 	double totalmass;  
 	double I; 	   // Moment of inertia
 
 	// dynamic physics: Changes at every timestep:
-	Vect2D pos = new Vect2D();     // position in the world coord system
-	Vect2D v   = new Vect2D();  // speed of the cm
+	Vec2D  pos = new Vec2D();     // position in the world coord system
+	Vec2D  v   = new Vec2D();  // speed of the cm
 	double dir;    // angle
 	double w;      // angular velocity
 	
@@ -76,11 +76,11 @@ public abstract class Ship {
 		// / / / / / / / / / / / /  
 		// updateForces();
 		
-		Vect2D f = new Vect2D();    // for linear movement: linear forces
-		double tau = 0;             // for angular rotation: Calculate Torque
+		Vec2D  f   = new Vec2D();    // for linear movement: linear forces
+		double tau = 0;              // for angular rotation: Calculate Torque
 		
 		// disposable Vect2D
-		Vect2D r = new Vect2D();
+		Vec2D r = new Vec2D();
 		
 		// calculating force f and torque tau:
 		for (ShipSystem s: systems) {
@@ -88,7 +88,7 @@ public abstract class Ship {
 				continue;
 			IForceExcertingShipSystem fs = (IForceExcertingShipSystem) s;
 			
-			Vect2D ffs = fs.getForceVect(); // force excerted by this component s
+			Vec2D ffs = fs.getForceVect(); // force excerted by this component s
 			
 			f.add( ffs );
 		
@@ -97,9 +97,7 @@ public abstract class Ship {
 			r.set( s.getlPos() );
 			r.sub( cm );
 			
-			tau +=  Vect2D.crossProd(r, ffs);
-			
-			totalmass += s.mass;
+			tau +=  Vec2D.crossProd(r, ffs);
 		}
 		
 		
@@ -110,13 +108,22 @@ public abstract class Ship {
 		//  dv = a * dt;
 		//  dx = v * dt;
 		
-		Vect2D a = new Vect2D( f.x / totalmass, f.y / totalmass);
+		Vec2D a = new Vec2D( f.x / totalmass, f.y / totalmass);
 		v  .add( a.x*dt, a.y*dt );
+        // TODO: add a bit of viscosity or friction!
 		pos.add( v.x*dt, v.y*dt ); 
 		
 		// bot now for the rotation!
-		
-		
+        w   += tau * dt / I;    // torque tau, Moment of inertia I
+        // a bit of friction to the angular velocity!
+		dir += w * dt;          // angular velocity w
+
+        // build rotation matrix:
+        
+        
+		//  we also have to adjust the 0-position for the rotation around the center of mass:
+        //  If we rotate 12° around the cm, we have to rotate
+        
 		//updateGlobalCoords();
 
 	}
@@ -131,6 +138,7 @@ public abstract class Ship {
 
 		// center of mass, local coords:
 		cm.set(0,0);
+        totalmass = 0;
 		for (ShipSystem s: systems) {
 			cm.x += (double)s.dx * s.mass;
 			cm.y += (double)s.dy * s.mass;

@@ -1,7 +1,7 @@
 package org.gerdl.openstrato.model;
 
-import org.gerdl.utils.Vect2D;
+import org.gerdl.utils.Vec2D;
 
 public interface IForceExcertingShipSystem {
-	public Vect2D getForceVect();
+	public Vec2D getForceVect();
 }

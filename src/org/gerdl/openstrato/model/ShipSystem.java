@@ -3,7 +3,7 @@ package org.gerdl.openstrato.model;
 import java.util.List;
 import java.util.Vector;
 
-import org.gerdl.utils.Vect2D;
+import org.gerdl.utils.Vec2D;
 
 public abstract class ShipSystem {
 	
@@ -17,8 +17,8 @@ public abstract class ShipSystem {
 	// physics:
 	double mass;
 	double dir = 0;   // A system can be built in any direction.
-	Vect2D lPos = new Vect2D();      // local position
-	Vect2D wPos = new Vect2D(); 
+	Vec2D lPos = new Vec2D();      // local position
+	Vec2D wPos = new Vec2D(); 
 	
 	
 	public ShipSystem(Ship _myship, Sim _mysim) {
@@ -29,5 +29,5 @@ public abstract class ShipSystem {
 	}
 
 	// retrieve local position, in ship coordinates
-	public Vect2D getlPos() {return lPos;}
+	public Vec2D getlPos() {return lPos;}
 }
