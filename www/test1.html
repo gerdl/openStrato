@@ -6,19 +6,20 @@
 
 Really weird stuff!
 
-<SCRIPT LANGUAGE="JAVASCRIPT" SRC="utils/Vec2D.js"
-TYPE="TEXT/JAVASCRIPT">
-	alert("bla blub.");
-	document.write("I love JavaScript");
-</SCRIPT>
+<SCRIPT LANGUAGE="JAVASCRIPT" SRC="../js/utils/Vec2D.js" TYPE="TEXT/JAVASCRIPT"> </SCRIPT>
 
 <SCRIPT LANGUAGE="JAVASCRIPT" TYPE="TEXT/JAVASCRIPT">
 	//alert("bla blub 2. ");
-	document.write("I love JavaScript 2");
+	document.write("I love JavaScript 2 \n");
 	
-	var v = Vec2D(12,13);
+	var v = new Vec2D(12,13);
 	
-	document.write("value of v: " + v.x );
+	document.write("<p> value of v: " + v.y +"</p>");
+	document.write("<p> value of plong: " + plong.y +"</p>");
+	document.write("<p> value of plingx: " + pling.x +"</p>");
+	document.write("<p> value of plingy: " + pling.y +"</p>");
+
+        v.say();
 	
 </SCRIPT>
 
