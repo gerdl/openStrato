@@ -1,7 +1,7 @@
 Welcome to the openStrato wiki!
 
 
- The Game itself
+The Game itself
 =================
 
 This should become the remake of the 1998 PC game "Stratosphere: Conquest of the Skies" that was neat but buggy, a great idea though and good fun to play. 
@@ -16,15 +16,15 @@ I found some (quite scary) videos of the old PC Game stratoshere that should be 
 * https://www.youtube.com/watch?v=dHqRnfv1aTU
 * https://www.youtube.com/watch?v=QGoGlueuNQU
 
- Graphics Implementation
- ========================
+Graphics Implementation
+========================
 
 I'd first like to make a 2.5-D version with sprites only, looking from above with parallax scrolling background.
 Later, if it's running nicely and somebody is interested we could still do a full-3d version or use different renderers.
 
 Graphics could be used from free space shooter tile sets, maybe also from the open source "Total Annihilation" remakes that use the Spring engine.
 
- Platform
+Platform
 ==========
 
 I'm really puzzled at the moment, which platform to use. Probably it'll be javascript using WebGL rendering. Options would be:
