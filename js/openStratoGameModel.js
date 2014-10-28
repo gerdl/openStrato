@@ -1,5 +1,42 @@
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
+//                  SystemTile Class
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+
+function SystemTile(dx,dy) {
+	this.dx = dx;
+	this.dy = dy;
+};
+
+
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+//                  ShipSystem Class
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+
+function ShipSystem(myship, mysim) {
+	this.myship = myship;
+	this.mysim  = mysim;
+	
+	this.space = [];  // type SystemTile
+	
+	ShipSystem.prototype.dx = 0; // relative coordinates on grid
+	ShipSystem.prototype.dy = 0;
+	
+	// physics:
+	this.mass = 0.0;
+	this.dir  = 0.0;   // A system can be built in any direction.
+	this.lPos = new Vec2D();      // local position
+	this.wPos = new Vec2D();      // world position
+};
+
+
+
+
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
 //                  Ship Class
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
@@ -7,25 +44,27 @@
 function Ship (sim) {
     this.sim = sim;
 
-    this.
+    this.systems = [];  // type ShipSystem
+
+    // economy:
+    this.res = new Resource();
+
+    // static physics: const as long as the ship design is not changing: 
+    this.cm  = new Vec2D();     // cm, center of mass in local coords
+    this.totalmass = 0.0;  
+    this.I         = 0.0; 	   // Moment of inertia
+
+    // dynamic physics: Changes at every timestep:
+    this.pos = new Vec2D();     // position in the world coord system
+    this.v   = new Vec2D();  // speed of the cm
+    this.dir = 0.0;    // angle
+    this.w   = 0.0;      // angular velocity
+    
+    
+    this.updateCenterOfMassAndInertia();
 }
 
 // ship systems:
-Ship.prototype.systems = [];
-
-// economy:
-Ship.prototype.res = new Resource();
-
-// static physics: const as long as the ship design is not changing: 
-Ship.prototype.cm  = new Vec2D();     // cm, center of mass in local coords
-Ship.prototype.totalmass = 0.0;  
-Ship.prototype.I         = 0.0; 	   // Moment of inertia
-
-// dynamic physics: Changes at every timestep:
-Ship.prototype.pos = new Vec2D();     // position in the world coord system
-Ship.prototype.v   = new Vec2D();  // speed of the cm
-Ship.prototype.dir = 0.0;    // angle
-Ship.prototype.w   = 0.0;      // angular velocity
 
 
 
@@ -77,22 +116,24 @@ Ship.prototype.update = function(dt) {
     Vec2D r = new Vec2D();
     
     // calculating force f and torque tau:
-    for (ShipSystem s: systems) {
-	if (!(s instanceof IForceExcertingShipSystem))
-	    continue;
-	IForceExcertingShipSystem fs = (IForceExcertingShipSystem) s;
+    for (s in this.systems) {
+    	
+    	if (!(s instanceof IForceExcertingShipSystem))
+    		continue;
+    	
+    	IForceExcertingShipSystem fs = (IForceExcertingShipSystem) s;
 	
-	Vec2D ffs = fs.getForceVect(); // force excerted by this component s
+    	Vec2D ffs = fs.getForceVect(); // force excerted by this component s
 	
-	f.add( ffs );
+    	f.add( ffs );
 	
-	// we're not interested in the radius from the coordinate center,
-	// but in the radius to the rotation center, i.e., the center of mass:
-	r.set( s.getlPos() );
-	r.sub( cm );
+    	// we're not interested in the radius from the coordinate center,
+    	// but in the radius to the rotation center, i.e., the center of mass:
+    	r.set( s.getlPos() );
+    	r.sub( cm );
 	
-	tau +=  Vec2D.crossProd(r, ffs);
-    }
+    	tau +=  Vec2D.crossProd(r, ffs);
+    	}
     
     
     
@@ -120,7 +161,7 @@ Ship.prototype.update = function(dt) {
     
     //updateGlobalCoords();
 
-}
+};
 
 
 
@@ -132,23 +173,23 @@ Ship.prototype.update = function(dt) {
 Ship.prototype.updateCenterOfMassAndInertia = function() {
 
     // center of mass, local coords:
-    cm.set(0,0);
-    totalmass = 0;
-    for (ShipSystem s: systems) {
-	cm.x += (double)s.dx * s.mass;
-	cm.y += (double)s.dy * s.mass;
-	totalmass += s.mass;
+    this.cm.set(0,0);
+    this.totalmass = 0;
+    for (var s in this.systems) {
+    	this.cm.x += (double)s.dx * s.mass;
+    	this.cm.y += (double)s.dy * s.mass;
+    	totalmass += s.mass;
     }
-    assert( totalmass > 0.0);
-    cm.x /= totalmass;
-    cm.y /= totalmass;
+    assert( this.totalmass > 0.0 );
+    this.cm.x /= totalmass;
+    this.cm.y /= totalmass;
 
     
     // Now that we know the center of mass, we can calculate the 
     // Moment of Inertia, I:
-    I = 0;
-    for (ShipSystem s: systems) {
-	I += s.getlPos().lenSq() * s.mass;
+    this.I = 0;
+    for (var s in this.systems) {
+    	this.I += s.getlPos().lenSq() * s.mass;
     }
     
 
@@ -169,6 +210,6 @@ function Resource (silicon,metal,energy) {
     this.silicon = silicon;
     this.metal   = metal;
     this.energy  = energy;
-}
+};
 
 
