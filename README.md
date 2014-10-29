@@ -4,7 +4,7 @@ Welcome to the openStrato wiki!
 The Game itself
 =================
 
-This should become the remake of the 1998 PC game "Stratosphere: Conquest of the Skies" that was neat but buggy, a great idea though and good fun to play. 
+This should become the remake of the 1998 PC game "Stratosphere: Conquest of the Skies" that was neat but buggy, a great idea though and good fun to play. Gerd is developing this game to procrastinate his thesis!
 openStrato will be a 2D or 2.5D, top-down view, design, build and fly your spaceship game.
 
 Some links:
