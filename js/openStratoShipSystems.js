@@ -11,11 +11,9 @@
 function SmallSteeringJet(myship, mysim) {
 	ShipSystem.call(this,myship,mysim);     // extends ShipSystem
 	
-	this.mass = 10;
 };
+SmallSteeringJet.prototype = new ShipSystem();
 
-SmallSteeringJet.prototype = Object.create(ShipSystem.prototype);
-//SmallSteeringJet.prototype.constructor = SmallSteeringJet;
-
-
-//SmallSteeringJet.
+// static members:
+SmallSteeringJet.prototype.mass = 10;
+SmallSteeringJet.prototype.identi = "SmallSteeringJet";

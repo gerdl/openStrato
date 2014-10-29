@@ -3,6 +3,20 @@
 
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
+//                  abstract Game Class
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+
+function Game() {
+    this.sim              = new Sim();
+    this.constructionView = new ConstructionView();
+    this.flightView       = new FlightView();
+    this.graphicsSet      = new GraphicsSet();
+}
+
+
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
 //                  SystemTile Class
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
@@ -17,26 +31,27 @@ function SystemTile(dx,dy) {
 
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
-//                  ShipSystem Class
+//              abstract class ShipSystem 
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
 
 function ShipSystem(myship, mysim) {
-	this.myship = myship;
-	this.mysim  = mysim;
+    this.myship = myship;
+    this.mysim  = mysim;
 	
-	this.space = [];  // type SystemTile
-	
-	ShipSystem.prototype.dx = 0; // relative coordinates on grid
-	ShipSystem.prototype.dy = 0;
-	
-	// physics:
-	this.mass = 0.0;
-	this.dir  = 0.0;   // A system can be built in any direction.
-	this.lPos = new Vec2D();      // local position
-	this.wPos = new Vec2D();      // world position
+    this.dx = 0; // relative coordinates on grid
+    this.dy = 0;
+    
+    // physics:
+    this.dir  = 0.0;   // A system can be built in any direction.
+    this.lPos = new Vec2D();      // local position
+    this.wPos = new Vec2D();      // world position
 };
 
+// static members:
+ShipSystem.prototype.space  = [];          // type SystemTile
+ShipSystem.prototype.identi = "unknown";   // has to be overwritten by actual implementations!
+ShipSystem.prototype.mass   = 0.0;
 
 
 
