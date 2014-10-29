@@ -9,7 +9,9 @@ MyGraphicsSet = function() {
     GraphicsSet.call(this);
 
     // load some graphics:
-    sprites.add( new Sprite(0,0,1,1,"../Tilesets/gi/blueHexTiles.jpg") );
+    assert( sprites.length == 0 );
+    sprites.add( new Sprite(0,0,1,1,"test1Graphics/blueHexTiles.jpg") );
+    sprites.add( new Sprite(0,0,1,1,"test1Graphics/Mother2.bmp") );
 }
 MyGraphicsSet.prototype = new GraphicsSet();
 

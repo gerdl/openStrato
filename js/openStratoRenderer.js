@@ -65,10 +65,12 @@ function Sprite(u1,v1,u2,v2,fname) {
 
 /// x,y are screen coordinates
 Sprite.prototype.draw = function(x1,y1,x2,y2) {
-    
-}
+    assert( false );
+};
 
 // don't actually create a new GL texture, just use a subarea of an existing texture!
 Sprite.prototype.getSubsprite = function(u1,v1,u2,v2) {
-
-}
+    var sp = new Sprite(u1,v1,u2,v2);
+    sp.texture = this.texture;
+    return returen sp;
+};
