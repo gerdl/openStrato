@@ -6,23 +6,29 @@
 
 Really weird stuff!
 
-<SCRIPT LANGUAGE="JAVASCRIPT" SRC="../js/utils/Vec2D.js" TYPE="TEXT/JAVASCRIPT"> </SCRIPT>
+<SCRIPT SRC="../js/utils.js" TYPE="TEXT/JAVASCRIPT" /> </SCRIPT>
+<SCRIPT SRC="../js/openStratoGameModel.js" TYPE="TEXT/JAVASCRIPT" />  </SCRIPT>
+<SCRIPT SRC="../js/openStratoShipSystems.js" TYPE="TEXT/JAVASCRIPT" />   </SCRIPT>
 
 <SCRIPT LANGUAGE="JAVASCRIPT" TYPE="TEXT/JAVASCRIPT">
-	//alert("bla blub 2. ");
-	document.write("I love JavaScript 2 \n");
-	
-	var v = new Vec2D(12,13);
-	
-	document.write("<p> value of v: " + v.y +"</p>");
-	document.write("<p> value of plong: " + plong.y +"</p>");
-	document.write("<p> value of plingx: " + pling.x +"</p>");
-	document.write("<p> value of plingy: " + pling.y +"</p>");
 
-        v.say();
+	"use strict";
+
+	document.write( "<p> harmless stuff. </p>" );
+
+	var j = new SmallSteeringJet();
+	var k = new ShipSystem();
+	
+	var s = new Ship();
+	
+	s.update();
+	
+	document.write( "<p> mass_j is "+ j.mass +" </p>" );
+	document.write( "<p> mass_k is "+ k.mass +" </p>" );
 	
 </SCRIPT>
 
+<p> that's all. </p>
 
 
 </BODY>

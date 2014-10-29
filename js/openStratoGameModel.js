@@ -1,3 +1,6 @@
+"use strict";
+
+
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
 //                  SystemTile Class
@@ -7,6 +10,8 @@
 function SystemTile(dx,dy) {
 	this.dx = dx;
 	this.dy = dy;
+	if (undefined === dx) this.dx = 0.0;
+	if (undefined === dy) this.dy = 0.0;
 };
 
 
@@ -60,9 +65,9 @@ function Ship (sim) {
     this.dir = 0.0;    // angle
     this.w   = 0.0;      // angular velocity
     
-    
-    this.updateCenterOfMassAndInertia();
-}
+    // there are no ship systems yet, so don't update center of mass, here, yet.
+    //this._updateCenterOfMassAndInertia();
+};
 
 // ship systems:
 
@@ -109,21 +114,19 @@ Ship.prototype.update = function(dt) {
     // / / / / / / / / / / / /  
     // updateForces();
     
-    Vec2D  f   = new Vec2D();    // for linear movement: linear forces
-    double tau = 0;              // for angular rotation: Calculate Torque
+    var f   = new Vec2D();    // for linear movement: linear forces
+    var tau = 0;              // for angular rotation: Calculate Torque
     
     // disposable Vect2D
-    Vec2D r = new Vec2D();
+    var r = new Vec2D();
     
     // calculating force f and torque tau:
-    for (s in this.systems) {
+    for (var s in this.systems) {
     	
-    	if (!(s instanceof IForceExcertingShipSystem))
+    	if (s.getForceVect === undefined)
     		continue;
-    	
-    	IForceExcertingShipSystem fs = (IForceExcertingShipSystem) s;
 	
-    	Vec2D ffs = fs.getForceVect(); // force excerted by this component s
+    	var ffs = s.getForceVect(); // force excerted by this component s
 	
     	f.add( ffs );
 	
@@ -143,15 +146,16 @@ Ship.prototype.update = function(dt) {
     //  dv = a * dt;
     //  dx = v * dt;
     
-    Vec2D a = new Vec2D( f.x / totalmass, f.y / totalmass);
-    v  .add( a.x*dt, a.y*dt );
+    var ax = f.x / this.totalmass;
+    var ay = f.y / this.totalmass;
+    this.v.add( ax*dt, ay*dt );
     // TODO: add a bit of viscosity or friction!
-    pos.add( v.x*dt, v.y*dt ); 
+    this.pos.add( this.v.x*dt, this.v.y*dt ); 
     
     // but now for the rotation!
-    w   += tau * dt / I;    // torque tau, Moment of inertia I
+    this.w   += tau * dt / this.I;    // torque tau, Moment of inertia I
     // a bit of friction to the angular velocity!
-    dir += w * dt;          // angular velocity w
+    this.dir += this.w * dt;          // angular velocity w
 
     // build rotation matrix:
     
@@ -170,14 +174,15 @@ Ship.prototype.update = function(dt) {
  * when new systems are added or destroyed, we'll have to update the center of mass. 
  * @return 
  */
-Ship.prototype.updateCenterOfMassAndInertia = function() {
+Ship.prototype._updateCenterOfMassAndInertia = function() {
 
     // center of mass, local coords:
     this.cm.set(0,0);
     this.totalmass = 0;
-    for (var s in this.systems) {
-    	this.cm.x += (double)s.dx * s.mass;
-    	this.cm.y += (double)s.dy * s.mass;
+    for (var i in this.systems) {
+    	var s = this.systems[i];
+    	this.cm.x += s.dx * s.mass;
+    	this.cm.y += s.dy * s.mass;
     	totalmass += s.mass;
     }
     assert( this.totalmass > 0.0 );
@@ -188,12 +193,13 @@ Ship.prototype.updateCenterOfMassAndInertia = function() {
     // Now that we know the center of mass, we can calculate the 
     // Moment of Inertia, I:
     this.I = 0;
-    for (var s in this.systems) {
+    for (var i in this.systems) {
+    	var s = this.systems[i];
     	this.I += s.getlPos().lenSq() * s.mass;
     }
     
 
-}
+};
 
 
 

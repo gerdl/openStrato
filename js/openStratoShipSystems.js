@@ -1,3 +1,6 @@
+"use strict";
+
+
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
 //                  SmallSteeringJet Class
@@ -8,11 +11,11 @@
 function SmallSteeringJet(myship, mysim) {
 	ShipSystem.call(this,myship,mysim);     // extends ShipSystem
 	
-	this.mass = 15;
+	this.mass = 10;
 };
 
 SmallSteeringJet.prototype = Object.create(ShipSystem.prototype);
-SmallSteeringJet.prototype.constructor = SmallSteeringJet;
+//SmallSteeringJet.prototype.constructor = SmallSteeringJet;
 
 
 //SmallSteeringJet.
