@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<TITLE>Stuff</TITLE>
+</HEAD>
+<BODY>
+
+Really weird stuff!
+
+<SCRIPT SRC="../js/utils.js" TYPE="TEXT/JAVASCRIPT" /> </SCRIPT>
+<SCRIPT SRC="../js/openStratoGameModel.js" TYPE="TEXT/JAVASCRIPT" />  </SCRIPT>
+<SCRIPT SRC="../js/openStratoShipSystems.js" TYPE="TEXT/JAVASCRIPT" />   </SCRIPT>
+
+<SCRIPT LANGUAGE="JAVASCRIPT" TYPE="TEXT/JAVASCRIPT">
+
+	"use strict";
+
+	document.write( "<p> harmless stuff. </p>" );
+
+	var j = new SmallSteeringJet();
+	var k = new ShipSystem();
+	
+	var s = new Ship();
+	
+	s.update();
+	
+	document.write( "<p> mass_j is "+ j.mass +" </p>" );
+	document.write( "<p> mass_k is "+ k.mass +" </p>" );
+	
+</SCRIPT>
+
+<p> that's all. </p>
+
+
+</BODY>
+</HTML>
