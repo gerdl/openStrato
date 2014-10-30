@@ -1,17 +1,75 @@
+"use strict";
+
+/**
+ *   This module, openStratoRenerer defines a rendering system, in this case
+ *   using WebGL.
+ *   Maybe later I'm going to write a renderer for android or SDL, etc...
+ *
+ *   Still, GraphicsSet is abstract - it needs to be extended with a practical graphics set,
+ *   for example testgame1graphics.js
+ */
+
 
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
-//                  FlightView Class
+//            class FlightView
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
 
-function FlightView() {
-    
+function FlightView(game) {
+    this.g   = game;
+    this.cam = new CameraController();
 }
 
+
+FlightView.prototype.render = function() {
+
+    this.cam.update(); // pan camera
+    
+    for (var i in this.g.sim.parts) {
+        var p = this.g.sim.parts[i];
+
+        // get the sprite associated with this simulation participant:
+        var s = p.getRenderer();
+
+        // transform coordinates:
+        
+        s.render();
+    }
+};
+
+FlightView.prototype.setWorld = function(world) {
+    this.cam = new CameraController(world.dx, world.dy);
+};
+
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
-//                  GraphicsSet Class
+//            CameraController
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+function CameraController(mx,my) {
+    this.mx=mx, this.my=my;  // maxx maxy
+
+    this.cx=mx/2, this.cy=my/2;  // current x,y position of the cam
+    this.visx=20.0;
+    this.vx=0, this.vy=0;  // scrolling speed
+}
+
+CameraController.prototype.onCameraDrag = function(dx,dy) {
+
+};
+
+
+CameraController.prototype.update = function() {
+    //TODO: Check if pShip leaves screen
+
+    // TODO: Move/Scroll/ camera
+};
+
+
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+//            astract class GraphicsSet
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
 
@@ -23,7 +81,7 @@ function GraphicsSet() {
 /**
  *   getRenderer is called by 
  */
-// IRenderer requestRenderer (String identi)
+// Sprite requestRenderer (String identi)
 GraphicsSet.prototype.requestRenderer = null;
 
 // //////////////////////////////////////////////////////

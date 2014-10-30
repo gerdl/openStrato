@@ -3,16 +3,74 @@
 
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
-//                  abstract Game Class
+//                  abstract class Game
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
-
 function Game() {
     this.sim              = new Sim();
     this.constructionView = new ConstructionView();
     this.flightView       = new FlightView();
     this.graphicsSet      = new GraphicsSet();
 }
+
+
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+//                  class Sim
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+function Sim() {
+    this.world = new WorldMap();
+    this.pShip = new Ship();
+    this.parts = [];          // array of SimulationParticipant
+    this.time  = 0.0;
+}
+
+Sim.prototype.dt = 1.0;
+
+Sim.prototype.update = function() {
+    for (var i in this.parts) {
+        var p = this.everything[i];
+        p.update(this.dt);
+    }
+    this.pShip.update( this.dt );
+};
+
+Sim.prototype.addPart = function(part) {
+    this.everything.add( part );
+    };
+
+
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+//                  abstract class WorldMap
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+function WorldMap(xd,yd) {
+    this.xd = xd;
+    this.yd = yd;
+    }
+
+
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+//           abstract class SimulationParticipant
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+function SimulationParticipant() {
+    this.x   = 0;
+    this.y   = 0;
+    this.renderer = null;       
+    }
+
+// static fields, for the renderer:
+SimulationParticipant.prototype.identi = "unknown";
+
+// abstract methods
+SimulationParticipant.prototype.update = null;   // has to be overwritten!
+
+SimulationParticipant.prototype.getRenderer = function () {return this.renderer;};
+
 
 
 // //////////////////////////////////////////////////////
@@ -47,6 +105,7 @@ function ShipSystem(myship, mysim) {
     this.lPos = new Vec2D();      // local position
     this.wPos = new Vec2D();      // world position
 };
+
 
 // static members:
 ShipSystem.prototype.space  = [];          // type SystemTile
@@ -132,7 +191,7 @@ Ship.prototype.update = function(dt) {
     var f   = new Vec2D();    // for linear movement: linear forces
     var tau = 0;              // for angular rotation: Calculate Torque
     
-    // disposable Vect2D
+    // disposable Vec2D
     var r = new Vec2D();
     
     // calculating force f and torque tau:
@@ -148,7 +207,7 @@ Ship.prototype.update = function(dt) {
     	// we're not interested in the radius from the coordinate center,
     	// but in the radius to the rotation center, i.e., the center of mass:
     	r.set( s.getlPos() );
-    	r.sub( cm );
+    	r.sub( this.cm );
 	
     	tau +=  Vec2D.crossProd(r, ffs);
     	}
@@ -183,8 +242,6 @@ Ship.prototype.update = function(dt) {
 };
 
 
-
-
 /**
  * when new systems are added or destroyed, we'll have to update the center of mass. 
  * @return 
@@ -198,11 +255,11 @@ Ship.prototype._updateCenterOfMassAndInertia = function() {
     	var s = this.systems[i];
     	this.cm.x += s.dx * s.mass;
     	this.cm.y += s.dy * s.mass;
-    	totalmass += s.mass;
+    	this.totalmass += s.mass;
     }
     assert( this.totalmass > 0.0 );
-    this.cm.x /= totalmass;
-    this.cm.y /= totalmass;
+    this.cm.x /= this.totalmass;
+    this.cm.y /= this.totalmass;
 
     
     // Now that we know the center of mass, we can calculate the 
@@ -215,7 +272,6 @@ Ship.prototype._updateCenterOfMassAndInertia = function() {
     
 
 };
-
 
 
 

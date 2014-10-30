@@ -35,11 +35,11 @@ Vec2D.prototype.set = function(x,y) {
 };
 
 Vec2D.prototype.len = function() {
-	return Math.sqrt( x*x + y*y );
+	return Math.sqrt( this.x*this.x + this.y*this.y );
 };
 
 Vec2D.prototype.lenSq = function() {
-	return (x*x + y*y);
+	return (this.x*this.x + this.y*this.y);
 };
 
 Vec2D.prototype.add = function(dx,dy) {
@@ -72,8 +72,8 @@ Vec2D.prototype.crossProd = function(a,b) {
  * 
  */
 Vec2D.prototype.setToMatMult = function(m,v) {
-    x = m.x[0]*v.x + m.x[1]*v.y;
-    y = m.x[2]*v.x + m.x[3]*v.y;
+    this.x = m.x[0]*v.x + m.x[1]*v.y;
+    this.y = m.x[2]*v.x + m.x[3]*v.y;
 }
 
 
