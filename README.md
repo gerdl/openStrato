@@ -16,6 +16,11 @@ I found some (quite scary) videos of the old PC Game stratoshere that should be 
 * https://www.youtube.com/watch?v=dHqRnfv1aTU
 * https://www.youtube.com/watch?v=QGoGlueuNQU
 
+## Game Principle
+
+For the game principle, it might be nice to mix in some Magic Carpet / Magic Carpet 2 like gameplay: Fly around, hunt down some smaller monsters, scavenge their resources, build a larger flying fortress, kill those evil other overlord monsters, scavenge more resource, even larger fortress, kill those lord-of-the-current-world-other-fortresses!
+
+
 Graphics Implementation
 ========================
 

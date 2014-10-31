@@ -112,6 +112,8 @@ ShipSystem.prototype.space  = [];          // type SystemTile
 ShipSystem.prototype.identi = "unknown";   // has to be overwritten by actual implementations!
 ShipSystem.prototype.mass   = 0.0;
 
+// to be implemented by thrusters:
+// ShipSystem.prototype.getForceVect() = function() {};
 
 
 // //////////////////////////////////////////////////////
@@ -192,24 +194,26 @@ Ship.prototype.update = function(dt) {
     var tau = 0;              // for angular rotation: Calculate Torque
     
     // disposable Vec2D
-    var r = new Vec2D();
+    var r = new Vec2D(); // radius vector from the center of mass:
     
     // calculating force f and torque tau:
-    for (var s in this.systems) {
+    for (var i in this.systems) {
+        var s = this.systems[i];
     	
     	if (s.getForceVect === undefined)
     		continue;
 	
     	var ffs = s.getForceVect(); // force excerted by this component s
 	
-    	f.add( ffs );
+    	f.addVec( ffs );
 	
     	// we're not interested in the radius from the coordinate center,
     	// but in the radius to the rotation center, i.e., the center of mass:
     	r.set( s.getlPos() );
-    	r.sub( this.cm );
+    	r.x -= this.cm.x;
+        r.y -= this.cm.y;
 	
-    	tau +=  Vec2D.crossProd(r, ffs);
+    	tau +=  Vec2D.prototype.crossProd(r, ffs);
     	}
     
     
@@ -228,11 +232,31 @@ Ship.prototype.update = function(dt) {
     
     // but now for the rotation!
     this.w   += tau * dt / this.I;    // torque tau, Moment of inertia I
-    // a bit of friction to the angular velocity!
     this.dir += this.w * dt;          // angular velocity w
 
-    // build rotation matrix:
+
     
+    // / / / / / / / / / / / / / / / / / / / / /
+    // now do the coordinate transformation:
+    //  calculate for each shipSystem the current world coordinates
+    // build rotation matrix:   ShipSystem around ship's center of mass.
+    var rotM = new Mat2D();
+        rotM.setRotationMat( this.dir );
+
+    // shift local to global:
+    var shft = new Vec2D(0,0);
+        shft.addVec (this.pos);
+        shft.addVec (this.cm);
+
+    // generate all new world coords of the ship systems:
+    for (i in this.systems) {
+        s = this.systems[i];
+
+        s.wPos.setToMatMult(rotM, s.lPos);
+        s.wPos.addVec( shft );
+        }
+    	
+
     
     //  we also have to adjust the 0-position for the rotation around the center of mass:
     //  If we rotate 12° around the cm, we have to rotate
