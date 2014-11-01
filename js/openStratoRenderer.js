@@ -1,7 +1,7 @@
 "use strict";
 
-/**
- *   This module, openStratoRenerer defines a rendering system, in this case
+/*
+ *   This module, openStratoRenerer, defines a rendering system, in this case
  *   using WebGL.
  *   Maybe later I'm going to write a renderer for android or SDL, etc...
  *
@@ -9,6 +9,94 @@
  *   for example testgame1graphics.js
  */
 
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+//            static class GerdlGL
+// //////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////
+var GerdlGL;
+
+
+GerdlGL.init = function(canvas) {
+
+    try {
+        var gl = canvas.getContext("experimental-webgl");
+        gl.viewportWidth = canvas.width;
+        gl.viewportHeight = canvas.height;
+        this.gl = gl;
+    } catch(e) {
+        alert("Uh-oh - very bad things happening, seems like WebGL doesn't work.");
+    }
+};
+
+
+GerdlGL.initShaders = function() {
+    var gl = this.gl;
+    var fragmentShader = this.getShader(gl, "shader-fs",gl.FRAGMENT_SHADER);
+    var vertexShader   = this.getShader(gl, "shader-vs",gl.VERTEX_SHADER);
+
+    var shaderProgram = gl.createProgram();
+    gl.attachShader(shaderProgram, vertexShader);
+    gl.attachShader(shaderProgram, fragmentShader);
+    gl.linkProgram(shaderProgram);
+
+    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS))
+       throw new GerdlGLException("Could not initialise shaders");
+
+    gl.useProgram(shaderProgram);
+
+    shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+    gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+
+    shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
+    gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
+
+    shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+    shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");    
+};
+
+GerdlGL.getShader = function(scriptString,type) {
+
+    var gl = this.gl;
+    var shader;
+        shader = gl.createShader(type);
+
+    gl.shaderSource(shader, scriptString);
+    gl.compileShader(shader);
+
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+        throw new GerdlGLException( gl.getShaderInfoLog(shader) );
+
+    return shader;
+};
+
+  /*========================= SHADERS ========================= */
+GerdlGL.shader_vertex_source="\n                                   \
+attribute vec3 aVertexPosition;                                    \
+attribute vec4 aVertexColor;                                       \
+                                                                   \
+uniform mat4 uMVMatrix;                                            \
+uniform mat4 uPMatrix;                                             \
+                                                                   \
+varying vec4 vColor;                                               \
+                                                                   \
+void main(void) {                                                  \
+  gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0); \
+  vColor = aVertexColor;                                           \
+}";
+
+
+GerdlGL.shader_fragment_source="\n\
+precision mediump float;\
+                        \
+varying vec4 vColor;    \
+                        \
+void main(void) {       \
+  gl_FragColor = vColor;\
+}";
+
+  /*========================= Exceptions  ========================= */
+function GerdlGLException(msg) {this.msg = msg;}
 
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
@@ -33,6 +121,7 @@ FlightView.prototype.render = function() {
         var s = p.getRenderer();
 
         // transform coordinates:
+        var wpos = p.wPos;
         
         s.render();
     }

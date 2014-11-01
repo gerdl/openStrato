@@ -1,32 +1,53 @@
 <HTML>
 <HEAD>
 <TITLE>Stuff</TITLE>
-</HEAD>
-<BODY>
-
-Really weird stuff!
 
 <SCRIPT SRC="../js/utils.js" TYPE="TEXT/JAVASCRIPT" /> </SCRIPT>
 <SCRIPT SRC="../js/openStratoGameModel.js" TYPE="TEXT/JAVASCRIPT" />  </SCRIPT>
 <SCRIPT SRC="../js/openStratoShipSystems.js" TYPE="TEXT/JAVASCRIPT" />   </SCRIPT>
 
+<SCRIPT SRC="../js/testgame1graphics.js" TYPE="TEXT/JAVASCRIPT" /> </SCRIPT>
+<SCRIPT SRC="../js/testgame1.js" TYPE="TEXT/JAVASCRIPT" /> </SCRIPT>
+
+
+</HEAD>
+<BODY onload="openStratoGLInit();">
+
+Really weird stuff!
+
+<canvas id="openStratoCanvas" style="border: none;" width="500" height="500"></canvas>
+
+
+
+
 <SCRIPT LANGUAGE="JAVASCRIPT" TYPE="TEXT/JAVASCRIPT">
+  "use strict";
 
-	"use strict";
+  function openStratoGLInit() {
+    var canvas = document.getElementById("openStratoCanvas");
 
-	document.write( "<p> harmless stuff. </p>" );
+    GerdlGL.init(canvas);
+  
+    Testgame1.
+  }
+  
+  
+  
+  document.write( "<p> harmless stuff. </p>" );
+  
+  var j = new SmallSteeringJet();
+  var k = new ShipSystem();
+  
+  var s = new Ship();
+  
+  s.update();
+  
+  document.write( "<p> mass_j is "+ j.mass +" </p>" );
+  document.write( "<p> mass_k is "+ k.mass +" </p>" );
 
-	var j = new SmallSteeringJet();
-	var k = new ShipSystem();
-	
-	var s = new Ship();
-	
-	s.update();
-	
-	document.write( "<p> mass_j is "+ j.mass +" </p>" );
-	document.write( "<p> mass_k is "+ k.mass +" </p>" );
-	
 </SCRIPT>
+
+
 
 <p> that's all. </p>
 

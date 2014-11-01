@@ -243,16 +243,21 @@ Ship.prototype.update = function(dt) {
     var rotM = new Mat2D();
         rotM.setRotationMat( this.dir );
 
+    // first we're rotating the ship's origin around the center of mass:
+    var origShift = new Vec2D();
+        origShift.setToMatMult( rotM, this.cm );
+    this.pos.add( -origShift.x, -origShift.y );
+    
     // shift local to global:
-    var shft = new Vec2D(0,0);
-        shft.addVec (this.pos);
-        shft.addVec (this.cm);
+    var shft = new Vec2D( 0,0 );
+        shft.addVec ( this.pos );
+        shft.addVec ( this.cm );
 
     // generate all new world coords of the ship systems:
     for (i in this.systems) {
         s = this.systems[i];
 
-        s.wPos.setToMatMult(rotM, s.lPos);
+        s.wPos.setToMatMult( rotM, s.lPos );
         s.wPos.addVec( shft );
         }
     	

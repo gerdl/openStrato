@@ -21,17 +21,18 @@ function assert( c ) {
 
 
 function Vec2D(x,y) {
-
     this.x = x;
     this.y = y;
-    
-    if (x === undefined) this.x = 555;
 };
 
 
 Vec2D.prototype.set = function(x,y) {
     this.x = x;
     this.y = y;
+};
+Vec2D.prototype.setVec = function(v) {
+    this.x = v.x;
+    this.y = v.y;
 };
 
 Vec2D.prototype.len = function() {
