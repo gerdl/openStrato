@@ -113,6 +113,13 @@ function FlightView(game) {
 FlightView.prototype.render = function() {
 
     this.cam.update(); // pan camera
+
+    mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+
+    mat4.identity(mvMatrix);
+
+    mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
+    
     
     for (var i in this.g.sim.parts) {
         var p = this.g.sim.parts[i];
@@ -211,8 +218,21 @@ function Sprite(u1,v1,u2,v2,fname) {
 };
 
 /// x,y are screen coordinates
-Sprite.prototype.draw = function(x1,y1,x2,y2) {
+Sprite.prototype.draw = function(gl, x1,y1,x2,y2) {
     assert( false );
+
+    mvPushMatrix();
+
+    mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);
+    gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+    
+    mvPopMatrix();
 };
 
 // don't actually create a new GL texture, just use a subarea of an existing texture!
