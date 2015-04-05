@@ -171,6 +171,7 @@ CameraController.prototype.update = function() {
 
 function GraphicsSet() {
     this.sprites = [];   // list of Sprites
+    //this.sprites.push( "fun" );
 }
 
 
@@ -189,6 +190,8 @@ GraphicsSet.prototype.requestRenderer = null;
 
 function Sprite(u1,v1,u2,v2,fname) {
 
+    var gl = GerdlGL.gl;
+    
     // u,v are the texture coordinates
     this.u1 = 0.0; 
     this.v1 = 0.0;
@@ -199,22 +202,32 @@ function Sprite(u1,v1,u2,v2,fname) {
 
         // define a texture image:
         var image = new Image();
-        image.src = fname;
                 
         // the texture, probably int, maybe a gl specific thing
         this.texture = gl.createTexture();
+        //image.crossOrigin = "Anonymous";
+        image.src = fname;
 
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+        var myTex = this.texture;
+        image.onload = function() {    // seems to be a lambda function, such that the local variables from
+                                       // the outside scope are inherited.
+            gl.bindTexture(gl.TEXTURE_2D, myTex);
 
-        // Set the parameters so we can render any size image.
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-        
-        // Upload the image into the texture.
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+            // Set the parameters so we can render any size image.
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+            
+            // Upload the image into the texture.
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
+            // and unbind the texture:
+            gl.bindTexture(gl.TEXTURE_2D, null);  // maybe better, such that this image is safed from further modifications!
+            };
+
     }
+    else throw new GerdlGLException("Texture image not defined.");
 };
 
 /// x,y are screen coordinates

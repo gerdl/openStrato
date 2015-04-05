@@ -1,6 +1,13 @@
 "use strict";
 
 
+// forward define the Views:
+// var ConstructionView = null;
+// var FlightView       = null;
+// var GraphicsSet      = null;
+//
+// mmhh... this doesn't seem to work!
+
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
 //                  abstract class Game
@@ -8,12 +15,21 @@
 // //////////////////////////////////////////////////////
 function Game() {
     this.sim              = new Sim();
+    this.currentView      = null;  // has to be defined later
 
     // The graphic representation, and hence the views will be defined later, in the Renderer.
-    //this.constructionView = new ConstructionView();
-    //this.flightView       = new FlightView();        // defined in openStratoRenderer.js
-    //this.graphicsSet      = new GraphicsSet();
+    // this.constructionView = new ConstructionView();
+    // this.flightView       = new FlightView();        // defined in openStratoRenderer.js
+    // this.graphicsSet      = new GraphicsSet();
 }
+
+Game.prototype.update = function() {
+    this.sim.update();
+};
+
+Game.prototype.render = function() {
+    this.currentView.render();
+    };
 
 
 // //////////////////////////////////////////////////////

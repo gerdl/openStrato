@@ -2,13 +2,13 @@
 <HEAD>
 <TITLE>Stuff</TITLE>
 
-<SCRIPT SRC="../js/utils.js" TYPE="TEXT/JAVASCRIPT" /> </SCRIPT>
-<SCRIPT SRC="../js/openStratoRenderer.js" TYPE="TEXT/JAVASCRIPT" />   </SCRIPT>
-<SCRIPT SRC="../js/openStratoGameModel.js" TYPE="TEXT/JAVASCRIPT" />  </SCRIPT>
-<SCRIPT SRC="../js/openStratoShipSystems.js" TYPE="TEXT/JAVASCRIPT" />   </SCRIPT>
+<SCRIPT SRC="js/utils.js" TYPE="TEXT/JAVASCRIPT" /> </SCRIPT>
+<SCRIPT SRC="js/openStratoRenderer.js" TYPE="TEXT/JAVASCRIPT" />   </SCRIPT>
+<SCRIPT SRC="js/openStratoGameModel.js" TYPE="TEXT/JAVASCRIPT" />  </SCRIPT>
+<SCRIPT SRC="js/openStratoShipSystems.js" TYPE="TEXT/JAVASCRIPT" />   </SCRIPT>
 
-<SCRIPT SRC="../js/testgame1graphics.js" TYPE="TEXT/JAVASCRIPT" /> </SCRIPT>
-<SCRIPT SRC="../js/testgame1.js" TYPE="TEXT/JAVASCRIPT" /> </SCRIPT>
+<SCRIPT SRC="js/testgame1graphics.js" TYPE="TEXT/JAVASCRIPT" /> </SCRIPT>
+<SCRIPT SRC="js/testgame1.js" TYPE="TEXT/JAVASCRIPT" /> </SCRIPT>
 
 
 </HEAD>
@@ -29,7 +29,12 @@ Really weird stuff!
 
     GerdlGL.init(canvas);
   
-    //Testgame1.
+    var game = new Testgame1();
+
+    game.update();
+    game.render();
+
+    // document.write( " <p> current Function is: openStratoGLInit. Done. </p>" );  // ok, no document present, yet.
   }
   
   
