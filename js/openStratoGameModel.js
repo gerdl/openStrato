@@ -8,9 +8,11 @@
 // //////////////////////////////////////////////////////
 function Game() {
     this.sim              = new Sim();
-    this.constructionView = new ConstructionView();
-    this.flightView       = new FlightView();
-    this.graphicsSet      = new GraphicsSet();
+
+    // The graphic representation, and hence the views will be defined later, in the Renderer.
+    //this.constructionView = new ConstructionView();
+    //this.flightView       = new FlightView();        // defined in openStratoRenderer.js
+    //this.graphicsSet      = new GraphicsSet();
 }
 
 

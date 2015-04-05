@@ -43,12 +43,12 @@ Vec2D.prototype.lenSq = function() {
 	return (this.x*this.x + this.y*this.y);
 };
 
-Vec2D.prototype.add = function(dx=0,dy=0) {
+Vec2D.prototype.add = function(dx,dy) {
 	this.x += dx;
 	this.y += dy;
 };
 
-Vec2D.prototype.addVec = function(dv = Vec2D()) {
+Vec2D.prototype.addVec = function(dv) {
 	this.x += dv.x;
 	this.y += dv.y;
 };

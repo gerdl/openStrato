@@ -14,7 +14,7 @@
 //            static class GerdlGL
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
-var GerdlGL;
+var GerdlGL = function() {};
 
 
 GerdlGL.init = function(canvas) {
@@ -239,5 +239,5 @@ Sprite.prototype.draw = function(gl, x1,y1,x2,y2) {
 Sprite.prototype.getSubsprite = function(u1,v1,u2,v2) {
     var sp = new Sprite(u1,v1,u2,v2);
     sp.texture = this.texture;
-    return returen sp;
+    return sp;
 };
