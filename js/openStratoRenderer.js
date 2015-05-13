@@ -98,6 +98,8 @@ void main(void) {       \
   /*========================= Exceptions  ========================= */
 function GerdlGLException(msg) {this.msg = msg;}
 
+
+
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
 //            class FlightView
@@ -114,10 +116,12 @@ FlightView.prototype.render = function() {
 
     this.cam.update(); // pan camera
 
+    var gl = GerdlGL.gl;
+
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-
+     
     mat4.identity(mvMatrix);
-
+     
     mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
     
     

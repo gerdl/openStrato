@@ -32,10 +32,19 @@ Graphics could be used from free space shooter tile sets, maybe also from the op
 Platform
 ==========
 
-I'm really puzzled at the moment, which platform to use. Probably it'll be javascript using WebGL rendering. Options would be:
+I'm really puzzled at the moment, which platform to use. Probably it'll be javascript using WebGL rendering.
 
-
+Other options would be:
 * standard Java, which would make it simple to run on a desktop as well as on Android, maybe using AndEngine (http://www.andengine.org/)
 * JavaScript using fancy WebGL, could just be running in a browser - PhoneGap would allow to have it run as a smartphone app.
 * Or GWT using GwtGL which would allow to write java code that is compiled down to javascript
 * Dart (www.dartlang.org) - compiles to javascript, also for web apps.
+
+3rd Party Libraries
+====================
+
+* glMatrix seems to be a fast and efficient js matrix/vector implementation:
+  ( https://github.com/toji/gl-matrix )
+  ( http://glmatrix.net/ )
+  by Brandon Jones
+
