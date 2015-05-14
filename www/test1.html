@@ -25,19 +25,27 @@ Really weird stuff!
 <SCRIPT LANGUAGE="JAVASCRIPT" TYPE="TEXT/JAVASCRIPT">
   "use strict";
 
+  var game = null;
+  
   function openStratoGLInit() {
     var canvas = document.getElementById("openStratoCanvas");
 
     GerdlGL.init(canvas);
-  
-    var game = new Testgame1();
 
-    game.update();
-    game.render();
+    game = new Testgame1();
+  
+    tick();
 
     // document.write( " <p> current Function is: openStratoGLInit. Done. </p>" );  // ok, no document present, yet.
   }
+
+  function tick () {
+    requestAnimFrame( tick );
+
+    game.update();
   
+    game.render();
+  };
   
   
   document.write( "<p> harmless stuff. </p>" );

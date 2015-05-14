@@ -26,7 +26,6 @@ function Testgame1() {
     // cam:
     this.flightView.cam.cx = this.sim.pShip.pos.x;
     this.flightView.cam.cy = this.sim.pShip.pos.y;
-    
 };
 Testgame1.prototype = new Game();  // use methods of super-class
 

@@ -16,6 +16,7 @@
 function Game() {
     this.sim              = new Sim();
     this.currentView      = null;  // has to be defined later
+    this.lastView         = null;
 
     // The graphic representation, and hence the views will be defined later, in the Renderer.
     // this.constructionView = new ConstructionView();
@@ -24,12 +25,20 @@ function Game() {
 }
 
 Game.prototype.update = function() {
+    
     this.sim.update();
 };
 
 Game.prototype.render = function() {
+
+    // so we switched the current view - let's init it.
+    if (this.currentView != this.lastView) {
+        this.currentView.init();
+        this.lastView = this.currentView;
+        }
+    
     this.currentView.render();
-    };
+};
 
 
 // //////////////////////////////////////////////////////

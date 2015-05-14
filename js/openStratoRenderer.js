@@ -55,6 +55,8 @@ GerdlGL.initShaders = function() {
     shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");    
 };
 
+
+
 GerdlGL.getShader = function(scriptString,type) {
 
     var gl = this.gl;
@@ -95,6 +97,23 @@ void main(void) {       \
   gl_FragColor = vColor;\
 }";
 
+
+/**
+ *  Google provided function such that the parameter-function is recalled for screen updates.
+ */
+window.requestAnimFrame = (function() {
+  return window.requestAnimationFrame ||
+         window.webkitRequestAnimationFrame ||
+         window.mozRequestAnimationFrame ||
+         window.oRequestAnimationFrame ||
+         window.msRequestAnimationFrame ||
+         function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
+           window.setTimeout(callback, 1000/60);
+         };
+})();
+
+
+
   /*========================= Exceptions  ========================= */
 function GerdlGLException(msg) {this.msg = msg;}
 
@@ -109,20 +128,38 @@ function GerdlGLException(msg) {this.msg = msg;}
 function FlightView(game) {
     this.g   = game;
     this.cam = new CameraController();
+
+    this.pMat  = mat4.create();
+    this.mvMat = mat4.create();
 }
+
+
+// To be called, when another view was active before
+FlightView.prototype.init = function() {
+    GerdlGL.gl.clearColor(0.0, 0.4, 0.2, 1.0);
+    GerdlGL.gl.enable(GerdlGL.gl.DEPTH_TEST);
+};
+
 
 
 FlightView.prototype.render = function() {
 
+    var gl = GerdlGL.gl;
+    
+    gl.enable(GerdlGL.gl.DEPTH_TEST);
+    gl.viewport(0, 0, GerdlGL.gl.viewportWidth, GerdlGL.gl.viewportHeight);
+    gl.clearColor(0.0, 0.4, 0.2, 1.0);
+    gl.clear(GerdlGL.gl.COLOR_BUFFER_BIT | GerdlGL.gl.DEPTH_BUFFER_BIT);
+    
+    
     this.cam.update(); // pan camera
 
-    var gl = GerdlGL.gl;
 
-    mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+    mat4.perspective(this.pMat, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
      
-    mat4.identity(mvMatrix);
+    mat4.identity(this.mvMat);
      
-    mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
+    mat4.translate(this.mvMat, this.mvMat, [-1.5, 0.0, -7.0]);
     
     
     for (var i in this.g.sim.parts) {
@@ -136,6 +173,8 @@ FlightView.prototype.render = function() {
         
         s.render();
     }
+
+    
 };
 
 FlightView.prototype.setWorld = function(world) {

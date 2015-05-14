@@ -16,7 +16,8 @@
 
 * <2015-05-13 Wed> TODO Liste!
 ** TODO Get anything rendered on screen
-*** TODO Run an update-loop that reruns the display routine!
+*** DONE Clear the screen buffer with bg color <2015-05-14 Thu>
+*** DONE Run an update-loop that reruns the display routine! <2015-05-14 Thu>
     this 'requestAnimFrame' seems to be handy here!
 *** TODO Get Ship rendered
 *** TODO Get Background rendered
